@@ -70,21 +70,22 @@ function Board({ handleTurn, xTurn, squares }) {
 
 export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
-  const [xTurn, setxTurn] = useState(true);
+  const xTurn = history.length % 2 === 1;
   const curSquares = history[history.length - 1];
 
   function handleTurn(board) {
     const newHistory = [...history, board];
     setHistory(newHistory);
-    setxTurn(!xTurn);
   }
 
   function jumpTo(move) {
-    console.log(`Jump to ${move}`);
+    const newHistory = history.slice(0, move + 1);
+    console.log(`newHistoryLen: ${newHistory.length}`)
+    setHistory(newHistory);
   }
 
   const moves = history.map((_, move) => {
-    const desc = `Go to ${move}`;
+    const desc = move > 0 ? `Go to ${move}` : `Go to start`;
     return (
       <li key={move}>
         <button onClick={() => jumpTo(move)}>{desc}</button>
